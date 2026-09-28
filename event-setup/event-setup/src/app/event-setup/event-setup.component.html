@@ -1,0 +1,95 @@
+<h1>Event Setup</h1>
+
+<form [formRoot]="eventForm">
+  <div class="tabs" role="tablist">
+    <button
+      type="button"
+      role="tab"
+      [attr.aria-selected]="activeTab() === 'general'"
+      (click)="select('general')"
+    >
+      General
+      @if (submitAttempted() && generalInvalid()) {
+        <span class="badge" aria-label="This tab has errors">&#9679;</span>
+      }
+    </button>
+
+    <button
+      type="button"
+      role="tab"
+      [attr.aria-selected]="activeTab() === 'tickets'"
+      (click)="select('tickets')"
+    >
+      Tickets
+      @if (submitAttempted() && ticketsInvalid()) {
+        <span class="badge" aria-label="This tab has errors">&#9679;</span>
+      }
+    </button>
+  </div>
+
+  @if (activeTab() === 'general') {
+    <section role="tabpanel">
+      <div class="field">
+        <label for="event-name">Event name</label>
+        <input id="event-name" type="text" [formField]="eventForm.name" />
+        @if (eventForm.name().touched() || submitAttempted()) {
+          <ul class="errors">
+            @for (error of eventForm.name().errors(); track error.kind) {
+              <li>{{ error.message }}</li>
+            }
+          </ul>
+        }
+      </div>
+
+      <div class="field">
+        <label for="event-description">Description</label>
+        <textarea id="event-description" rows="4" [formField]="eventForm.description"></textarea>
+        @if (eventForm.description().touched() || submitAttempted()) {
+          <ul class="errors">
+            @for (error of eventForm.description().errors(); track error.kind) {
+              <li>{{ error.message }}</li>
+            }
+          </ul>
+        }
+      </div>
+
+      <app-schedule-control
+        [formField]="eventForm.schedule"
+        [showErrors]="submitAttempted()"
+      />
+    </section>
+  }
+
+  @if (activeTab() === 'tickets') {
+    <section role="tabpanel">
+      <div class="field">
+        <label>
+          <input type="checkbox" [formField]="eventForm.freeEvent" />
+          This is a free event
+        </label>
+      </div>
+
+      <app-ticket-tiers-control
+        [formField]="eventForm.ticketTiers"
+        [showErrors]="submitAttempted()"
+        [disabledReason]="ticketsDisabledReason()"
+      />
+    </section>
+  }
+
+  <div class="actions">
+    <button [disabled]="eventForm().submitting()">
+      {{ eventForm().submitting() ? 'Saving…' : 'Save event' }}
+    </button>
+    <button type="button" (click)="reset()">Reset</button>
+
+    @if (submitAttempted() && eventForm().invalid()) {
+      <span class="errors">Some fields still need attention.</span>
+    }
+  </div>
+</form>
+
+@if (savedValue(); as saved) {
+  <h2>Saved</h2>
+  <pre>{{ saved | json }}</pre>
+}

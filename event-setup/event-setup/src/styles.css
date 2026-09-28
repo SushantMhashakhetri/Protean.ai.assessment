@@ -1,0 +1,72 @@
+:root {
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: light dark;
+}
+
+body {
+  margin: 0;
+  padding: 2rem 1rem;
+  background: Canvas;
+  color: CanvasText;
+}
+
+input,
+textarea,
+select,
+button {
+  font: inherit;
+  color: inherit;
+}
+
+input,
+textarea,
+select {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid GrayText;
+  border-radius: 4px;
+  background: Field;
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  opacity: 0.55;
+}
+
+button {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid GrayText;
+  border-radius: 4px;
+  background: ButtonFace;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.field > label {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.errors {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: #c0392b;
+  font-size: 0.8rem;
+}
+
+.hint {
+  color: GrayText;
+  font-size: 0.8rem;
+}
